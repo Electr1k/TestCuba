@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Import;
+namespace App\Http\Controllers\Api\Article;
 
 use App\Services\Article\Service;
 use Illuminate\Routing\Controller as BaseController;
 
-abstract class ImportController extends BaseController
+abstract class ArticleController extends BaseController
 {
 //    use AuthorizesRequests, ValidatesRequests;
 

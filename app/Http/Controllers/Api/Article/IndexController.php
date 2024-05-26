@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Import;
+namespace App\Http\Controllers\Api\Article;
 
 
 use App\Http\Resources\Article\ArticleResource;
 
-class IndexController extends ImportController
+class IndexController extends ArticleController
 {
 
     public function __invoke()

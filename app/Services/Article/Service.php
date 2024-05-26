@@ -16,12 +16,12 @@ class Service
         $response = $import->client->request('GET', $word);
         $html = $response->getBody()->getContents();
         $size = round(strlen($html)/(8*1024),1);
-        $count_words = $this->parseHTML($html);
+        [$plainText, $wordCount] = $this->parseHTML($html);
         DB::beginTransaction();
         try {
-            $article = ['title' => $word, 'url' => env("WIKI_BASE_URL").$word, 'size' => $size];
-            $article = Article::create($article);
-            foreach ($count_words as $word => $count) {
+            $articleData = ['title' => $word, 'url' => env("WIKI_BASE_URL").$word, 'size' => $size, 'plain_text' => $plainText];
+            $article = Article::create($articleData);
+            foreach ($wordCount as $word => $count) {
                 Word::create([
                     'article_id' => $article->id,
                     'word' => $word,
@@ -33,7 +33,6 @@ class Service
         }
         catch (\Exception $e){
             DB::rollBack();
-            dd($e->getMessage());
         }
         return null;
     }
@@ -45,21 +44,33 @@ class Service
         // Получаем основной контент
         $content = $dom->getElementById('bodyContent');
         $styleElements = $dom->getElementsByTagName('style');
-        // Удаляем каждый элемент style
+        // Удаляем каждый тег style
         while ($styleElement = $styleElements->item(0)) {
             $styleElement->parentNode->removeChild($styleElement);
         }
-        // Удаляем теги и преобразуем в строку
-        $content = strip_tags($dom->saveHTML($content));
-        // Разбиваем строку на слова и подсчитываем количество вхождений
-        return array_count_values(array_filter(
-            \preg_split('/[\\s.,-«»]/u', $content, 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
-            static function ($value) { return trim($value) !== ''; }
-        ));
+        // Заменяем все \n
+        $plaintText = preg_replace( "/\n\s+/", " ", rtrim(html_entity_decode(strip_tags($dom->saveHTML($content)))));
+        // Разбиваем строку на слова атомы
+        $words = preg_split("/[^а-яА-ЯA-Za-z0-9]/u", $plaintText);
+        // Убираем пустые строки и подсчитываем количество вхождений
+        $wordCount = array_count_values(array_filter($words, static function ($value) { return trim($value) !== ''; }));
+        return [$plaintText, $wordCount];
     }
 
-    public function index(){
+    public function index(): \Illuminate\Database\Eloquent\Collection
+    {
         $articles = Article::all();
+        return $articles;
+    }
+
+    public function search(string $word): \Illuminate\Support\Collection
+    {
+        $articles = DB::table('articles')
+            ->join('words', 'articles.id', '=', 'words.article_id')
+            ->where('word', 'like', $word)
+            ->orderBy('count', 'DESC')
+            ->get();
+
         return $articles;
     }
 }
