@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Import;
+namespace App\Http\Controllers\Api\Import;
 
 use App\Services\Article\Service;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
-class ImportController extends BaseController
+abstract class ImportController extends BaseController
 {
 //    use AuthorizesRequests, ValidatesRequests;
 

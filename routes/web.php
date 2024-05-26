@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Api Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('main');
-});
+Route::get('/', \App\Http\Controllers\Web\Import\IndexController::class)->name('import.index');

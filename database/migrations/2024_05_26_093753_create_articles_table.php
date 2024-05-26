@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255)->nullable(false);
             $table->string('url', 255)->nullable(false);
+            $table->float('size')->nullable(false)->default(0);
             $table->index('title', 'title_article_idx');
             $table->timestamps();
         });
