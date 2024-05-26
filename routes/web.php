@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', \App\Http\Controllers\Web\Import\IndexController::class)->name('import.index');
+Route::get('/', \App\Http\Controllers\Web\Main\IndexController::class)->name('import.index');

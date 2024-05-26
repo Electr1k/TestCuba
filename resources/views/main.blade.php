@@ -28,7 +28,7 @@
                     <div class="tab-pane fade active show" id="import" role="tabpanel" aria-labelledby="import">
 
                         <div class="input-group mb-5">
-                            <div class="form-outline" data-mdb-input-init>
+                            <div class="form-outline col-md-4">
                                 <input type="search" id="copyInput" class="form-control" />
                             </div>
                             <button id="copyBtn" type="button" class="btn btn-primary ml-2" data-mdb-ripple-init>Скопировать</button>
@@ -44,29 +44,30 @@
                             </tr>
                             </thead>
                             <tbody id="tableBody">
-                                @foreach($articles as $article)
-                                    <tr>
-                                        <td>{{ $article->title }}</td>
-                                        <td><a href="{{$article->url}}">{{ $article->url }}</a></td>
-                                        <td>{{ $article->size }} КБ</td>
-                                        <td>{{ count($article->words) }}</td>
-                                    </tr>
-                                @endforeach
+{{--                                @foreach($articles as $article)--}}
+{{--                                    <tr>--}}
+{{--                                        <td>{{ $article->title }}</td>--}}
+{{--                                        <td><a href="{{$article->url}}">{{ $article->url }}</a></td>--}}
+{{--                                        <td>{{ $article->size }} КБ</td>--}}
+{{--                                        <td>{{ count($article->words) }}</td>--}}
+{{--                                    </tr>--}}
+{{--                                @endforeach--}}
                             </tbody>
                         </table>
 
                     </div>
                     <div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="search">
-                        <div class="input-group">
-                            <div class="form-outline" data-mdb-input-init>
+                        <div class="input-group mb-5">
+                            <div class="form-outline col-md-4">
                                 <input type="search" id="searchInput" class="form-control" />
                             </div>
                             <button id="searchBtn" type="button" class="btn btn-primary ml-2">Найти</button>
                         </div>
                         <div class="row">
-                            <ul id="resultSearch" class="col-lg-6">
+                            <ul id="resultSearch" class="col-mb-auto">
+
                             </ul>
-                            <div id="city" class="card col-lg-6">
+                            <div id="articleContent" class="col ml-5 mr-3 py-2">
 
                             </div>
                         </div>

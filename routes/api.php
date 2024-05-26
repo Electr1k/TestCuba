@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Article\IndexController;
+use App\Http\Controllers\Api\Article\SearchController;
 use App\Http\Controllers\Api\Article\StoreController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('/import', StoreController::class);
-Route::get('/search', \App\Http\Controllers\Api\Article\SearchController::class);
-Route::get('/articles', \App\Http\Controllers\Web\Import\IndexController::class);
+Route::get('/search', SearchController::class);
+Route::get('/articles', IndexController::class);
