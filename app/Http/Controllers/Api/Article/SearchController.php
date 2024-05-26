@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api\Article;
 
 
-use App\Http\Resources\Article\ArticleResource;
-use App\Http\Resources\Article\ArticleSearchResource;
+use App\Http\Resources\Article\ArticlesWrapperResource;
 use Illuminate\Http\Request;
 
 class SearchController extends ArticleController
@@ -14,6 +13,7 @@ class SearchController extends ArticleController
     {
         $word = $request->validate(['word' => 'required|string|max:255|min:1'])['word'];
         $word = $request->get('word');
-        return ArticleSearchResource::collection($this->articleService->search($word));
+        $wrapper = new ArticlesWrapperResource($this->articleService->search($word));
+        return $wrapper->resolve();
     }
 }

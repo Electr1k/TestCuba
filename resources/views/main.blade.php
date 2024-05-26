@@ -29,7 +29,7 @@
 
                         <div class="input-group mb-5">
                             <div class="form-outline col-md-4">
-                                <input type="search" id="copyInput" class="form-control" />
+                                <input placeholder="Введите ключевое слово" type="search" id="copyInput" class="form-control" />
                             </div>
                             <button id="copyBtn" type="button" class="btn btn-primary ml-2" data-mdb-ripple-init>Скопировать</button>
                         </div>
@@ -43,23 +43,14 @@
                                 <th>Количество слов</th>
                             </tr>
                             </thead>
-                            <tbody id="tableBody">
-{{--                                @foreach($articles as $article)--}}
-{{--                                    <tr>--}}
-{{--                                        <td>{{ $article->title }}</td>--}}
-{{--                                        <td><a href="{{$article->url}}">{{ $article->url }}</a></td>--}}
-{{--                                        <td>{{ $article->size }} КБ</td>--}}
-{{--                                        <td>{{ count($article->words) }}</td>--}}
-{{--                                    </tr>--}}
-{{--                                @endforeach--}}
-                            </tbody>
+                            <tbody id="tableBody"></tbody>
                         </table>
 
                     </div>
                     <div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="search">
-                        <div class="input-group mb-5">
+                        <div class="input-group mb-4">
                             <div class="form-outline col-md-4">
-                                <input type="search" id="searchInput" class="form-control" />
+                                <input placeholder="Введите ключевое слово" type="search" id="searchInput" class="form-control" />
                             </div>
                             <button id="searchBtn" type="button" class="btn btn-primary ml-2">Найти</button>
                         </div>

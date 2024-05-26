@@ -70,7 +70,6 @@ class Service
             ->where('word', 'like', $word)
             ->orderBy('count', 'DESC')
             ->get();
-
         return $articles;
     }
 }

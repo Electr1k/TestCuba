@@ -48,8 +48,9 @@ searchBtn.onclick = async function () {
 
     if (status_code === 200) {
         const table = document.getElementById("resultSearch")
-        const articles = result.data
-        table.innerHTML = ''
+        const articles = result.articles
+        const total_found = result.total_found
+        table.innerHTML = `<li style="list-style-type: none;" class="mb-4"><span>Найдено: ${total_found} совпадений</span></li>`
         articles.forEach(article =>{
             table.innerHTML += `<li style="list-style-type: none;" class="mb-3"><a href="#" class="search-result">${article.title}</a><span> (${article.count} вхождение)</span></li>`;
         })
