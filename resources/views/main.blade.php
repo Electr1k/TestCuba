@@ -34,6 +34,10 @@
                             <button id="copyBtn" type="button" class="btn btn-primary ml-2" data-mdb-ripple-init>Скопировать</button>
                         </div>
 
+                        <div id="resultImport" class="mw-60">
+
+                        </div>
+
                         <table class="table table-hover text-nowrap">
                             <thead>
                             <tr>

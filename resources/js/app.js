@@ -5,6 +5,7 @@ const searchBtn = document.getElementById("searchBtn")
 
 copyBtn.onclick = async function(){
     const word = document.getElementById("copyInput").value
+    const start = Date.now();
     await fetch("/api/import", {
         method: "POST",
         body: JSON.stringify({
@@ -20,6 +21,20 @@ copyBtn.onclick = async function(){
             else alert("Произошла ошибка")
         } else {
             await response.json().then(result => {
+                // Добавляем блок с результатом добавления
+                const resultContainer = document.getElementById("resultImport")
+                resultContainer.classList.add('card')
+                resultContainer.classList.add('mb-4')
+                resultContainer.classList.add('p-3')
+                resultContainer.innerHTML = `
+                    <span>Импорт завершен.</span><br><br>
+                    <span>Найдена статья по адресу: <a href="${result.url}">${result.url}</a></span>
+                    <span>Время обработки: ${(Date.now() - start) / 1000} мс</span>
+                    <span>Размер статьи: ${result.size} КБ</span>
+                    <span>Количество слов: ${result.word_count}</span>
+                `
+
+                // Добавляем запись в таблицу
                 const tBody = document.getElementById("tableBody")
                 tBody.innerHTML +=
                     `<tr>
@@ -30,9 +45,9 @@ copyBtn.onclick = async function(){
                     </tr>`
             })
         }
-
     })
 }
+
 
 searchBtn.onclick = async function () {
     const word = document.getElementById("searchInput").value
@@ -51,9 +66,12 @@ searchBtn.onclick = async function () {
         const articles = result.articles
         const total_found = result.total_found
         table.innerHTML = `<li style="list-style-type: none;" class="mb-4"><span>Найдено: ${total_found} совпадений</span></li>`
+
+        // Заполняем список
         articles.forEach(article =>{
             table.innerHTML += `<li style="list-style-type: none;" class="mb-3"><a href="#" class="search-result">${article.title}</a><span> (${article.count} вхождение)</span></li>`;
         })
+
         document.querySelectorAll('.search-result').forEach((item, index) => {
             item.addEventListener('click', function() {
                 const content = document.getElementById("articleContent")
@@ -85,7 +103,8 @@ async function getArticles() {
     if (status_code === 200){
         const tBody = document.getElementById("tableBody")
         const articles = result.data
-        console.log(result.data)
+
+        // Заполняем таблицу
         articles.forEach(article => {
             tBody.innerHTML +=
                 `<tr>

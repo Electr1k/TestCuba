@@ -4,9 +4,12 @@ namespace App\Components;
 
 use GuzzleHttp\Client;
 
+/**
+ * Класс - клиент для HTTP запросов к wiki
+ */
 class ImportWikiClient
 {
-    public $client;
+    public Client $client;
     public function __construct(){
         $this->client = new Client([
             'base_uri' => env('WIKI_API_BASE_URL'),
