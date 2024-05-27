@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     resultContainer.classList.add('mb-4')
                     resultContainer.classList.add('p-3')
                     resultContainer.innerHTML = `
-                    <span>Импорт завершен.</span><br><br>
+                    <span>Импорт завершен.</span><br>
                     <span>Найдена статья по адресу: <a href="${result.url}">${result.url}</a></span>
                     <span>Время обработки: ${(Date.now() - start) / 1000} мс</span>
                     <span>Размер статьи: ${result.size} КБ</span>
