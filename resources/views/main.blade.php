@@ -5,8 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite('resources/js/app.js')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="{{ URL::asset('js/app.js') }}"></script>
     <title>Главная</title>
 </head>
 <body>
@@ -31,7 +31,7 @@
                             <div class="form-outline col-md-4">
                                 <input placeholder="Введите ключевое слово" type="search" id="copyInput" class="form-control" />
                             </div>
-                            <button id="copyBtn" type="button" class="btn btn-primary ml-2" data-mdb-ripple-init>Скопировать</button>
+                            <button id="copyBtn" type="button" class="copyBtn btn btn-primary ml-2" data-mdb-ripple-init>Скопировать</button>
                         </div>
 
                         <div id="resultImport" class="mw-60">
