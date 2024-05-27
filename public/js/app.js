@@ -1,4 +1,4 @@
-import './bootstrap';
+// import './bootstrap';
 
 const copyBtn = document.getElementById("copyBtn")
 const searchBtn = document.getElementById("searchBtn")
