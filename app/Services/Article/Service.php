@@ -13,13 +13,19 @@ class Service
     public function store(string $word): Article | null
     {
         $import = new ImportWikiClient();
-        $response = $import->client->request('GET', $word);
-        $html = $response->getBody()->getContents();
-        $size = round(strlen($html)/(8*1024),1);
-        [$plainText, $wordCount] = $this->parseHTML($html);
+        try {
+            $response = $import->client->request('GET', "?action=parse&format=json&page=$word");
+        }
+        catch (\Exception $e){
+            var_dump($e->getMessage());
+            return null; }
+        if ($response->getStatusCode() !== 200) return null;
+        $json = json_decode($response->getBody()->getContents(),true);
+        $size = round(strlen($json['parse']['text']['*'])/(8*1024),1);
+        [$plainText, $wordCount] = $this->parseHTML($json['parse']['text']['*']);
         DB::beginTransaction();
         try {
-            $articleData = ['title' => $word, 'url' => env("WIKI_BASE_URL").$word, 'size' => $size, 'plain_text' => $plainText];
+            $articleData = ['title' => $json['parse']['title'], 'url' => env("WIKI_BASE_URL").$word, 'size' => $size, 'plain_text' => $plainText];
             $article = Article::create($articleData);
             foreach ($wordCount as $word => $count) {
                 Word::create([
@@ -51,7 +57,8 @@ class Service
         // Заменяем все \n
         $plaintText = preg_replace( "/\n\s+/", " ", rtrim(html_entity_decode(strip_tags($dom->saveHTML($content)))));
         // Разбиваем строку на слова атомы
-        $words = preg_split("/[^а-яА-ЯA-Za-z0-9]/u", $plaintText);
+
+        $words = preg_split("/[^а-яА-ЯA-Za-z0-9]/u", mb_convert_case($plaintText, MB_CASE_LOWER, "UTF-8"));
         // Убираем пустые строки и подсчитываем количество вхождений
         $wordCount = array_count_values(array_filter($words, static function ($value) { return trim($value) !== ''; }));
         return [$plaintText, $wordCount];

@@ -5,7 +5,7 @@ const searchBtn = document.getElementById("searchBtn")
 
 copyBtn.onclick = async function(){
     const word = document.getElementById("copyInput").value
-    const response = await fetch("/api/import", {
+    await fetch("/api/import", {
         method: "POST",
         body: JSON.stringify({
             word: word,
@@ -14,24 +14,24 @@ copyBtn.onclick = async function(){
             "Content-Type": "application/json",
             "Accept": "application/json"
         }
-    })
-    const status_code = response.status
-    const result = await response.json();
-    if (status_code === 422) {
-        alert(result.message);
-    }
-    else{
-        const tBody = document.getElementById("tableBody")
-        const article = result.data
-        tBody.innerHTML +=
-        `<tr>
-            <td>${article.title}</td>
-            <td><a href=${article.url}>${article.url}</a></td>
-            <td>${article.size} КБ</td>
-            <td>${article.word_count}</td>
-        </tr>`
-    }
+    }).then(async response => {
+        if (!response.ok) {
+            if (response.status === 422) alert("Статья не найдена");
+            else alert("Произошла ошибка")
+        } else {
+            await response.json().then(result => {
+                const tBody = document.getElementById("tableBody")
+                tBody.innerHTML +=
+                    `<tr>
+                        <td>${result.title}</td>
+                        <td><a href=${result.url}>${result.title}</a></td>
+                        <td>${result.size} КБ</td>
+                        <td>${result.word_count}</td>
+                    </tr>`
+            })
+        }
 
+    })
 }
 
 searchBtn.onclick = async function () {
@@ -58,7 +58,11 @@ searchBtn.onclick = async function () {
             item.addEventListener('click', function() {
                 const content = document.getElementById("articleContent")
                 content.classList.add('card')
-                content.innerHTML = `<p>${articles[index].plain_text}</p>`;
+                content.innerHTML = `
+                    <h3 class="card-title">
+                        ${articles[index].title}
+                    </h3>
+                    <p>${articles[index].plain_text}</p>`;
             });
         });
     }
@@ -86,7 +90,7 @@ async function getArticles() {
             tBody.innerHTML +=
                 `<tr>
             <td>${article.title}</td>
-            <td><a href=${article.url}>${article.url}</a></td>
+            <td><a href=${article.url}>${article.title}</a></td>
             <td>${article.size} КБ</td>
             <td>${article.word_count}</td>
         </tr>`

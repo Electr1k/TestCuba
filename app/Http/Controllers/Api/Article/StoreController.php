@@ -13,7 +13,7 @@ class StoreController extends ArticleController
     {
         $word = $request->validate(['word' => 'required|string|max:255|min:1'])['word'];
         $article = $this->articleService->store($word);
-        if ($article) return new ArticleResource($article);
+        if ($article) return ArticleResource::make($article)->resolve();
         else return response('error', 400);
     }
 }
