@@ -32,6 +32,9 @@
                                 <input placeholder="Введите ключевое слово" type="search" id="copyInput" class="form-control" />
                             </div>
                             <button id="copyBtn" type="button" class="copyBtn btn btn-primary ml-2" data-mdb-ripple-init>Скопировать</button>
+                            <div class="d-lg-none spinner-border text-primary ml-3" id="spinner" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
 
                         <div id="resultImport" class="mw-60">

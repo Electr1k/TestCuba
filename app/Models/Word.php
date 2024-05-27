@@ -11,8 +11,8 @@ class Word extends Model
 
     protected $guarded = false;
 
-    public function article()
+    public function articles()
     {
-        return $this->belongsTo(Article::class, 'article_id', 'id');
+        return $this->belongsToMany(Article::class, 'article_word', 'word_id', 'article_id');
     }
 }

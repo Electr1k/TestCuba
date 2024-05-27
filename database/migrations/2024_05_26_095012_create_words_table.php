@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,11 +14,19 @@ return new class extends Migration
     {
         Schema::create('words', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('article_id')->nullable(false);
-            $table->foreign('article_id', 'article_word_fk')->on('articles')->references('id')->onDelete('cascade');
             $table->string('word',255)->nullable(false);
-            $table->unsignedMediumInteger('count')->nullable(false)->default(1);
             $table->timestamps();
+        });
+        Schema::create('article_word', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('article_id');
+            $table->unsignedBigInteger('word_id');
+            $table->unsignedMediumInteger('count')->nullable(false)->default(1);
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+            $table->foreign('word_id')->references('id')->on('words')->onDelete('cascade');
+            $table->index("article_id");
+            $table->index("word_id");
+            $table->index("count");
         });
     }
 
@@ -27,5 +36,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('words');
+        Schema::dropIfExists('article_word');
     }
 };

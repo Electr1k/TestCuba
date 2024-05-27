@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('url', 255)->nullable(false);
             $table->float('size')->nullable(false)->default(0);
             $table->mediumText('plain_text')->nullable(false);
+            $table->unsignedInteger('word_count')->nullable(false)->default(0);
             $table->index('title', 'title_article_idx');
             $table->timestamps();
         });

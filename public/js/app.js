@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const copyBtn = document.getElementById('copyBtn')
     const searchBtn = document.getElementById("searchBtn")
-
+    const spinner = document.getElementById("spinner")
     copyBtn.onclick = async function(){
+        spinner.classList.remove('d-lg-none')
         const word = document.getElementById("copyInput").value
         const start = Date.now();
         await fetch("/api/import", {
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Accept": "application/json"
             }
         }).then(async response => {
+            spinner.classList.add('d-lg-none')
             if (!response.ok) {
                 if (response.status === 422) alert("Статья не найдена");
                 else alert("Произошла ошибка")

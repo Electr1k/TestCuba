@@ -20,7 +20,7 @@ class ArticleResource extends JsonResource
             'url' => $this->url,
             'size' => $this->size,
             'plain_text' => $this->plain_text,
-            'word_count' => count($this->words),
+            'word_count' => $this->word_count,
         ];
     }
 }

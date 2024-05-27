@@ -13,6 +13,6 @@ class Article extends Model
 
     public function words()
     {
-        return $this->hasMany(Word::class, 'article_id', 'id');
+        return $this->belongsToMany(Word::class, 'article_word', 'article_id', 'word_id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Article;
 
 use App\Components\ImportWikiClient;
 use App\Models\Article;
+use App\Models\ArticleWord;
 use App\Models\Word;
 use DOMDocument;
 use GuzzleHttp\Exception\GuzzleException;
@@ -50,19 +51,20 @@ class Service
                 'title' => $json['parse']['title'],
                 'url' => env("WIKI_BASE_URL").$word,
                 'size' => $size,
+                'word_count' => array_sum($wordCount),
                 'plain_text' => $plainText];
-            $article = Article::create($articleData);
+            $article = Article::firstOrCreate($articleData);
             foreach ($wordCount as $word => $count) {
-                Word::create([
-                    'article_id' => $article->id,
+                $wordModel = Word::firstOrCreate([
                     'word' => $word,
-                    'count' => $count,
                     ]);
+                ArticleWord::firstOrCreate(['article_id' => $article->id, 'word_id' => $wordModel->id, 'count' => $count]);
             }
             DB::commit();
             return $article;
         }
         catch (\Exception $e){
+            dump($e);
             DB::rollBack();
         }
         return null;
@@ -116,7 +118,8 @@ class Service
     public function search(string $word): \Illuminate\Support\Collection
     {
         return DB::table('articles')
-            ->join('words', 'articles.id', '=', 'words.article_id')
+            ->join('article_word', 'articles.id', '=', 'article_word.article_id')
+            ->join('words', 'words.id', '=', 'article_word.word_id')
             ->where('word', 'like', $word)
             ->orderBy('count', 'DESC')
             ->get();
